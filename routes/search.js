@@ -11,7 +11,9 @@ router.post("/search/rating", searchController.searchResultByRating);
 
 router.post("/search/price", searchController.searchResultByPrice);
 
-//router.post("/search/filter", searchController.filterResultByPriceAndRating);
+router.post("/search/filter", searchController.filterResultByPriceAndRating);
+
+router.get("/catagory", searchController.getCatagory);
 
 
 module.exports = router;
