@@ -7,43 +7,19 @@ exports.searchResult = (req, res) => {
     var name = pName.replace(/\s/g, "").toLowerCase()
     var SubName = name.toString().substring(0,4)
 
-//select * from testdb where Catagory LIKE "%${category}" AND product_name LIKE "%${pName}" ORDER BY price, rating DESC LIMIT 0,3
-
-
-// SELECT iteminfo.item_name,
-//   testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-//   JOIN testdb ON testdb.item_id = iteminfo.item_id
-//   JOIN websites ON websites.websiteID = testdb.websiteID
-//   WHERE iteminfo.item_name LIKE '%konkaac'
-//  ORDER BY price, rating DESC LIMIT 0,3
-
  con.query(`SELECT iteminfo.item_name,
  testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
  JOIN testdb ON testdb.item_id = iteminfo.item_id
  JOIN websites ON websites.websiteID = testdb.websiteID
- WHERE iteminfo.item_name LIKE "%${name}%"
-ORDER BY price, rating DESC LIMIT 0,3`,function(error,result){
+ WHERE iteminfo.item_name LIKE "${name}"
+ORDER BY price, rating DESC LIMIT 0,3`,function(error,preResult){
 
-    console.log(result.length)
+    console.log(preResult.length)
     
     if(error){
         console.log('Error Occure')
         res.send(error)
-    }else if(result.length==0){
-
-       // select * from testdb where LOWER(product_name) LIKE "%${SubName}%" ORDER BY price, rating DESC LIMIT 0,3
-       //select * from testdb where Catagory LIKE "%${category}" AND LOWER(product_name) LIKE "%${SubName}%" ORDER BY price, rating DESC LIMIT 0,3
-
-
-
-
-// SELECT iteminfo.item_name,
-//   testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-//   JOIN testdb ON testdb.item_id = iteminfo.item_id
-//   JOIN websites ON websites.websiteID = testdb.websiteID
-//   WHERE iteminfo.item_name LIKE '%konkaac'
-//  ORDER BY price, rating DESC LIMIT 0,3
-
+    }else if(preResult.length==0){
         con.query(`SELECT iteminfo.item_name,
         testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
         JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -60,7 +36,7 @@ ORDER BY price, rating DESC LIMIT 0,3`,function(error,result){
         })
     }else{
         console.log("main call")
- res.send(result)
+ res.send(preResult)
     }
 
    
@@ -69,35 +45,41 @@ ORDER BY price, rating DESC LIMIT 0,3`,function(error,result){
 
 
 exports.searchResultByRating = (req, res) => {
-    //var category = req.body.ctg;
     var pName = req.body.name;
     var name = pName.replace(/\s/g, "").toLowerCase()
+    var SubName = name.toString().substring(0,4)
 
-//select * from testdb where Catagory LIKE "%${category}" AND product_name LIKE "%${pName}" ORDER BY price, rating DESC LIMIT 0,3
 
-// con.query(`select * from testdb where LOWER(product_name) LIKE "%${LName}" ORDER BY rating DESC LIMIT 0,3`,function(error,result){
-
-    // SELECT iteminfo.item_name,
-    // testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-    // JOIN testdb ON testdb.item_id = iteminfo.item_id
-    // JOIN websites ON websites.websiteID = testdb.websiteID
-    // WHERE iteminfo.item_name LIKE '%konkaac'
-    // ORDER BY rating DESC LIMIT 0,3
-
-    con.query(` SELECT iteminfo.item_name,
+    con.query(`SELECT iteminfo.item_name,
     testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
     JOIN testdb ON testdb.item_id = iteminfo.item_id
     JOIN websites ON websites.websiteID = testdb.websiteID
-    WHERE iteminfo.item_name LIKE "%${name}"
-    ORDER BY rating DESC LIMIT 0,3`,function(error,result){
+    WHERE iteminfo.item_name LIKE "${name}"
+    ORDER BY rating DESC LIMIT 0,3`,function(error,preResult){
    
     console.log(result.length)
     
     if(error){
         console.log('Error Occure')
         res.send(error)
-    }else{
-        res.send(result)
+    }else if(preResult.length==0){
+        con.query(`SELECT iteminfo.item_name,
+    testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+    JOIN testdb ON testdb.item_id = iteminfo.item_id
+    JOIN websites ON websites.websiteID = testdb.websiteID
+    WHERE iteminfo.item_name LIKE "%${SubName}%"
+    ORDER BY rating DESC LIMIT 0,3`,function(error,result){
+            if(error){
+                console.log('Error Occure')
+                res.send(error)
+            }else{
+                console.log("sub call")
+                res.send(result)
+                   }
+        })
+    }
+    else{
+        res.send(preResult)
     }
 })
 }
@@ -105,35 +87,41 @@ exports.searchResultByRating = (req, res) => {
 
 
 exports.searchResultByPrice = (req, res) => {
-    //var category = req.body.ctg;
     var pName = req.body.name;
     var name = pName.replace(/\s/g, "").toLowerCase()
-
-//select * from testdb where Catagory LIKE "%${category}" AND product_name LIKE "%${pName}" ORDER BY price, rating DESC LIMIT 0,3
-
-
-// SELECT iteminfo.item_name,
-// testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-// JOIN testdb ON testdb.item_id = iteminfo.item_id
-// JOIN websites ON websites.websiteID = testdb.websiteID
-// WHERE iteminfo.item_name LIKE '%konkaac'
-// ORDER BY price LIMIT 0,3
+    var SubName = name.toString().substring(0,4)
 
 
-con.query(`SELECT iteminfo.item_name,
-testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-JOIN testdb ON testdb.item_id = iteminfo.item_id
-JOIN websites ON websites.websiteID = testdb.websiteID
-WHERE iteminfo.item_name LIKE "%${name}"
-ORDER BY price LIMIT 0,3`,function(error,result){
+    con.query(`SELECT iteminfo.item_name,
+    testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+    JOIN testdb ON testdb.item_id = iteminfo.item_id
+    JOIN websites ON websites.websiteID = testdb.websiteID
+    WHERE iteminfo.item_name LIKE "${name}"
+    ORDER BY price DESC LIMIT 0,3`,function(error,preResult){
    
     console.log(result.length)
     
     if(error){
         console.log('Error Occure')
         res.send(error)
-    }else{
-        res.send(result)
+    }else if(preResult.length==0){
+        con.query(`SELECT iteminfo.item_name,
+    testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+    JOIN testdb ON testdb.item_id = iteminfo.item_id
+    JOIN websites ON websites.websiteID = testdb.websiteID
+    WHERE iteminfo.item_name LIKE "%${SubName}%"
+    ORDER BY price DESC LIMIT 0,3`,function(error,result){
+            if(error){
+                console.log('Error Occure')
+                res.send(error)
+            }else{
+                console.log("sub call")
+                res.send(result)
+                   }
+        })
+    }
+    else{
+        res.send(preResult)
     }
 })
 }
@@ -145,33 +133,58 @@ ORDER BY price LIMIT 0,3`,function(error,result){
 
 
 exports.filterResultByPriceAndRating = (req, res) => {
-    //var category = req.body.ctg;
     var pName = req.body.name;
     var name = pName.replace(/\s/g, "").toLowerCase()
     var price = req.body.price
     var rating = req.body.rating
+    var SubName = name.toString().substring(0,4)
 
     console.log(price)
     console.log(rating)
-//select * from testdb where Catagory LIKE "%${category}" AND product_name LIKE "%${pName}" ORDER BY price, rating DESC LIMIT 0,3
 
 con.query(`SELECT iteminfo.item_name,
 testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
 JOIN testdb ON testdb.item_id = iteminfo.item_id
 JOIN websites ON websites.websiteID = testdb.websiteID
-WHERE iteminfo.item_name LIKE "%${name}"
+WHERE iteminfo.item_name LIKE "${name}"
+AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC
+LIMIT 0,3`,function(error,preResult){
+
+
+    console.log(preResult.length)
+    
+    if(error){
+        console.log('Error Occure')
+        res.send(error)
+    }else if(preResult.length==0){
+        con.query(`SELECT iteminfo.item_name,
+testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+JOIN testdb ON testdb.item_id = iteminfo.item_id
+JOIN websites ON websites.websiteID = testdb.websiteID
+WHERE iteminfo.item_name LIKE "%${SubName}%"
 AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC
 LIMIT 0,3`,function(error,result){
+    if(error){
+        console.log('Error Occure')
+        res.send(error)
+    }else{
+        console.log("sub call")
+        res.send(result)
+           }
+})
+}
+else{
+    res.send(preResult)
+}
+})
+}
+
+
+
+
+exports.getCatagory = (req, res) => {
+con.query(`SELECT c_name FROM category`,function(error,result){
     
-//     SELECT iteminfo.item_name,
-//     testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-//     JOIN testdb ON testdb.item_id = iteminfo.item_id
-//     JOIN websites ON websites.websiteID = testdb.websiteID
-//     WHERE iteminfo.item_name LIKE "%${LName}"
-//    AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC
-//    LIMIT 0,3
-
-
     console.log(result.length)
     
     if(error){
@@ -185,12 +198,8 @@ LIMIT 0,3`,function(error,result){
 
 
 
-
-exports.getCatagory = (req, res) => {
-
-    // SELECT c_name FROM category;
-
-con.query(`SELECT c_name FROM category`,function(error,result){
+exports.getProduct = (req, res) => {
+con.query(`SELECT item_name FROM iteminfo`,function(error,result){
     
     console.log(result.length)
     

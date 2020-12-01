@@ -15,5 +15,7 @@ router.post("/search/filter", searchController.filterResultByPriceAndRating);
 
 router.get("/catagory", searchController.getCatagory);
 
+router.get("/product", searchController.getProduct);
+
 
 module.exports = router;
