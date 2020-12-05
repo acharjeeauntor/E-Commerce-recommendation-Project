@@ -1,0 +1,84 @@
+DELIMITER //
+
+CREATE PROCEDURE prodSearch(name varchar(10))
+BEGIN
+ SELECT iteminfo.item_name,
+ testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+ JOIN testdb ON testdb.item_id = iteminfo.item_id
+ JOIN websites ON websites.websiteID = testdb.websiteID
+ WHERE iteminfo.item_name LIKE name
+ORDER BY rating DESC,price;
+END//
+
+DELIMITER
+
+CALL prodSearch('xiaomicc9');
+
+------------------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE SubNameSearch(subName varchar(10),)
+BEGIN
+SELECT iteminfo.item_name,
+        testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+        JOIN testdb ON testdb.item_id = iteminfo.item_id
+        JOIN websites ON websites.websiteID = testdb.websiteID
+        WHERE iteminfo.item_name LIKE %SubName%
+       ORDER BY price, rating DESC LIMIT 0,3;
+END //
+
+DELIMITER ;
+
+CALL SubNameSearch('xiaomi');
+
+----------------------------------
+
+
+DELIMITER //
+CREATE PROCEDURE ProcedureCategory()
+BEGIN 
+SELECT c_name FROM category;
+END //
+DELIMITER ;
+
+CALL ProcedureCategory();
+
+
+----------------------------------------
+
+DELIMITER //
+CREATE PROCEDURE ProcedureGetProduct()
+BEGIN 
+SELECT item_name FROM iteminfo;
+END//
+DELIMITER ;
+
+CALL ProcedureGetProduct();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

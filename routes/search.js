@@ -17,5 +17,7 @@ router.get("/catagory", searchController.getCatagory);
 
 router.get("/product", searchController.getProduct);
 
+router.post("/search/category/product", searchController.getProductBycategory);
+
 
 module.exports = router;
