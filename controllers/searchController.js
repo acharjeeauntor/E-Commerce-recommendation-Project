@@ -7,7 +7,7 @@ exports.searchResult = (req, res) => {
     var name = pName.replace(/\s/g, "").toLowerCase()
     var SubName = name.toString().substring(0,4)
 
- con.query(`SELECT iteminfo.item_name,category.categoryname,
+ con.query(`SELECT iteminfo.item_name,websites.site_image_url,
  testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
  JOIN category ON iteminfo.category_id = category.c_id
  JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -21,7 +21,7 @@ ORDER BY rating DESC,price`,function(error,preResult){
         console.log('Error Occure')
         res.send(error)
     }else if(preResult.length==0){
-        con.query(`SELECT iteminfo.item_name,category.categoryname,
+        con.query(`SELECT iteminfo.item_name,websites.site_image_url,
         testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
         JOIN category ON iteminfo.category_id = category.c_id
         JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -33,12 +33,12 @@ ORDER BY rating DESC,price`,function(error,preResult){
                 res.send(error)
             }else{
                 console.log("sub call")
-                res.send(result)
+                return res.status(200).send(result)
                    }
         })
     }else{
         console.log("main call")
- res.send(preResult)
+        return res.status(200).send(preResult)
     }
 
    
@@ -79,12 +79,12 @@ exports.searchResultByRating = (req, res) => {
                 res.send(error)
             }else{
                 console.log("sub call")
-                res.send(result)
+                return res.status(200).send(result)
                    }
         })
     }
     else{
-        res.send(preResult)
+        return res.status(200).send(preResult)
     }
 })
 }
@@ -124,12 +124,12 @@ exports.searchResultByPrice = (req, res) => {
                 res.send(error)
             }else{
                 console.log("sub call")
-                res.send(result)
+                return res.status(200).send(result)
                    }
         })
     }
     else{
-        res.send(preResult)
+        return res.status(200).send(preResult)
     }
 })
 }
@@ -178,12 +178,12 @@ AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC`,funct
         res.send(error)
     }else{
         console.log("sub call")
-        res.send(result)
+        return res.status(200).send(result)
            }
 })
 }
 else{
-    res.send(preResult)
+    return res.status(200).send(preResult)
 }
 })
 }
@@ -198,9 +198,10 @@ con.query(`SELECT categoryname FROM category`,function(error,result){
     
     if(error){
         console.log('Error Occure')
-        res.send(error)
+        return res.send(error)
     }else{
-        res.send(result)
+        //res.send(result)
+        return res.status(200).send(result)
     }
 })
 }
@@ -214,9 +215,9 @@ con.query(`SELECT item_name FROM iteminfo`,function(error,result){
     
     if(error){
         console.log('Error Occure')
-        res.send(error)
+        return res.send(error)
     }else{
-        res.send(result)
+        return res.status(200).send(result)
     }
 })
 }
@@ -231,9 +232,9 @@ exports.getProductBycategory = (req, res) => {
         
         if(error){
             console.log('Error Occure')
-            res.send(error)
+            return res.send(error)
         }else{
-            res.send(result)
+            return res.status(200).send(result)
         }
     })
     }
