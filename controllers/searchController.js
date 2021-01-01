@@ -157,7 +157,7 @@ JOIN category ON iteminfo.category_id = category.c_id
 JOIN testdb ON testdb.item_id = iteminfo.item_id
 JOIN websites ON websites.websiteID = testdb.websiteID
 WHERE LOWER(REPLACE(iteminfo.item_name,' ','')) LIKE "${name}" AND category.categoryname ="${category}"
-AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC`,function(error,preResult){
+AND (price <= ${price} AND rating>= ${rating}) ORDER BY price,rating DESC`,function(error,preResult){
 
 
     console.log(preResult.length)
@@ -172,7 +172,7 @@ JOIN category ON iteminfo.category_id = category.c_id
 JOIN testdb ON testdb.item_id = iteminfo.item_id
 JOIN websites ON websites.websiteID = testdb.websiteID
 WHERE LOWER(REPLACE(iteminfo.item_name,' ','')) LIKE "%${SubName}%" AND category.categoryname ="${category}"
-AND (price <= ${price} AND rating<= ${rating}) ORDER BY price,rating DESC`,function(error,result){
+AND (price <= ${price} AND rating>= ${rating}) ORDER BY price,rating DESC`,function(error,result){
     if(error){
         console.log('Error Occure')
         res.send(error)
