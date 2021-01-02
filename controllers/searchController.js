@@ -31,7 +31,9 @@ ORDER BY rating DESC,price`,function(error,preResult){
             if(error){
                 console.log('Error Occure')
                 res.send(error)
-            }else{
+            }else if(result.length==0){
+                return res.status(200).send([])
+                    }else{
                 console.log("sub call")
                 return res.status(200).send(result)
                    }
@@ -53,7 +55,7 @@ exports.searchResultByRating = (req, res) => {
     var SubName = name.toString().substring(0,4)
 
 
-    con.query(`SELECT iteminfo.item_name,category.categoryname,
+    con.query(`SELECT iteminfo.item_name,websites.site_image_url,
     testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
     JOIN category ON iteminfo.category_id = category.c_id
     JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -67,8 +69,8 @@ exports.searchResultByRating = (req, res) => {
         console.log('Error Occure')
         res.send(error)
     }else if(preResult.length==0){
-        con.query(`SELECT iteminfo.item_name,category.categoryname,
-    testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+        con.query(`SELECT iteminfo.item_name,websites.site_image_url,
+        testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
     JOIN category ON iteminfo.category_id = category.c_id
     JOIN testdb ON testdb.item_id = iteminfo.item_id
     JOIN websites ON websites.websiteID = testdb.websiteID
@@ -77,7 +79,9 @@ exports.searchResultByRating = (req, res) => {
             if(error){
                 console.log('Error Occure')
                 res.send(error)
-            }else{
+            }else if(result.length==0){
+                return res.status(200).send([])
+                    }else{
                 console.log("sub call")
                 return res.status(200).send(result)
                    }
@@ -98,7 +102,7 @@ exports.searchResultByPrice = (req, res) => {
     var SubName = name.toString().substring(0,4)
 
 
-    con.query(`SELECT iteminfo.item_name,category.categoryname,
+    con.query(`SELECT iteminfo.item_name,websites.site_image_url,
     testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
     JOIN category ON iteminfo.category_id = category.c_id
     JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -112,8 +116,8 @@ exports.searchResultByPrice = (req, res) => {
         console.log('Error Occure')
         res.send(error)
     }else if(preResult.length==0){
-        con.query(`SELECT iteminfo.item_name,category.categoryname,
-    testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+        con.query(`SELECT iteminfo.item_name,websites.site_image_url,
+        testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
     JOIN category ON iteminfo.category_id = category.c_id
     JOIN testdb ON testdb.item_id = iteminfo.item_id
     JOIN websites ON websites.websiteID = testdb.websiteID
@@ -122,7 +126,9 @@ exports.searchResultByPrice = (req, res) => {
             if(error){
                 console.log('Error Occure')
                 res.send(error)
-            }else{
+            }else if(result.length==0){
+                return res.status(200).send([])
+                    }else{
                 console.log("sub call")
                 return res.status(200).send(result)
                    }
@@ -148,10 +154,7 @@ exports.filterResultByPriceAndRating = (req, res) => {
     var rating = req.body.rating
     var SubName = name.toString().substring(0,4)
 
-    console.log(price)
-    console.log(rating)
-
-con.query(`SELECT iteminfo.item_name,category.categoryname,
+con.query(`SELECT iteminfo.item_name,websites.site_image_url,
 testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
 JOIN category ON iteminfo.category_id = category.c_id
 JOIN testdb ON testdb.item_id = iteminfo.item_id
@@ -166,8 +169,8 @@ AND (price <= ${price} AND rating>= ${rating}) ORDER BY price,rating DESC`,funct
         console.log('Error Occure')
         res.send(error)
     }else if(preResult.length==0){
-        con.query(`SELECT iteminfo.item_name,category.categoryname,
-testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
+        con.query(`SELECT iteminfo.item_name,websites.site_image_url,
+        testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
 JOIN category ON iteminfo.category_id = category.c_id
 JOIN testdb ON testdb.item_id = iteminfo.item_id
 JOIN websites ON websites.websiteID = testdb.websiteID
@@ -176,7 +179,10 @@ AND (price <= ${price} AND rating>= ${rating}) ORDER BY price,rating DESC`,funct
     if(error){
         console.log('Error Occure')
         res.send(error)
-    }else{
+    }else if(result.length==0){
+return res.status(200).send([])
+    }
+    else{
         console.log("sub call")
         return res.status(200).send(result)
            }
@@ -187,8 +193,6 @@ else{
 }
 })
 }
-
-
 
 
 exports.getCatagory = (req, res) => {
