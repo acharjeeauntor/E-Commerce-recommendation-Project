@@ -16,6 +16,6 @@ app.use(bodyParser.json());
 
 //Routes
 app.use("/", require("./routes/search"));
-
+app.use("/feedback", require("./routes/feedback"));
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server run on port ${port}`));
