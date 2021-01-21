@@ -16,7 +16,7 @@ const con = mysql.createConnection({
   host:'localhost',
         user:'root',
         password:'',
-        database:'defense',
+        database:'ecommerce_products',
 });
   
 con.connect(function(err) {

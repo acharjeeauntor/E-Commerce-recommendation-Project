@@ -7,8 +7,6 @@ const searchController = require("../controllers/searchController");
 
 router.post("/search", searchController.searchResult);
 
-router.post("/search/filter", searchController.filterResultByPriceAndRating);
-
 router.get("/product", searchController.getProduct);
 
 
