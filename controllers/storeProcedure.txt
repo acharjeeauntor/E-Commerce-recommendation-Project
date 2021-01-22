@@ -1,56 +1,27 @@
 DELIMITER //
 
-CREATE PROCEDURE prodSearch(name varchar(10))
+CREATE PROCEDURE productSearch(name varchar(10))
 BEGIN
- SELECT iteminfo.item_name,
- testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
- JOIN testdb ON testdb.item_id = iteminfo.item_id
- JOIN websites ON websites.websiteID = testdb.websiteID
- WHERE iteminfo.item_name LIKE name
-ORDER BY rating DESC,price;
+ SELECT products.product_name,product_info.website_name,
+ product_info.price,product_info.review,product_info.rating,
+ product_info.Product_url,product_info.product_image_url 
+FROM product_info
+ JOIN products ON products.product_id =product_info.product_id
+WHERE LOWER(REPLACE(products.product_name,' ','')) LIKE name 
+ OR  LOWER(REPLACE(products.product_name,' ','')) LIKE %name% 
+ ORDER BY product_info.rating DESC,product_info.price ;
 END//
 
 DELIMITER
 
-CALL prodSearch('xiaomicc9');
+CALL productSearch('xiaomicc9');
 
 ------------------------------------------------------------
 
 DELIMITER //
-
-CREATE PROCEDURE SubNameSearch(subName varchar(10),)
-BEGIN
-SELECT iteminfo.item_name,
-        testdb.price,testdb.rating,testdb.Product_url,websites.site FROM iteminfo 
-        JOIN testdb ON testdb.item_id = iteminfo.item_id
-        JOIN websites ON websites.websiteID = testdb.websiteID
-        WHERE iteminfo.item_name LIKE %SubName%
-       ORDER BY price, rating DESC LIMIT 0,3;
-END //
-
-DELIMITER ;
-
-CALL SubNameSearch('xiaomi');
-
-----------------------------------
-
-
-DELIMITER //
-CREATE PROCEDURE ProcedureCategory()
+CREATE PROCEDURE ProductName()
 BEGIN 
-SELECT c_name FROM category;
-END //
-DELIMITER ;
-
-CALL ProcedureCategory();
-
-
-----------------------------------------
-
-DELIMITER //
-CREATE PROCEDURE ProcedureGetProduct()
-BEGIN 
-SELECT item_name FROM iteminfo;
+SELECT product_name FROM products;
 END//
 DELIMITER ;
 
